@@ -1,36 +1,68 @@
+import maplibregl from "maplibre-gl";
+
 function mapStore() {
-  const isCustomMap = ref(false);
-  const lineLayer = ref(false);
-  const polygonLayer = ref(false);
-  const circleLayer = ref(false);
+  const markerCoordinates = ref([107.6191, -6.8896]);
+  const customMarker = ref<maplibregl.Marker | null>(null);
+  const map = ref<maplibregl.Map | null>(null);
 
   // Actions
-  const toggleCustomMap = () => {
-    isCustomMap.value = !isCustomMap.value;
+  const setCustomMarker = (marker: maplibregl.Marker) => {
+    customMarker.value = marker;
   };
 
-  const toggleLine = () => {
-    lineLayer.value = !lineLayer.value;
+  const addLayer = ({
+    layerId,
+    stateSource,
+    data,
+    type,
+    ...rest
+  }: {
+    layerId: string;
+    stateSource: string;
+    data: object;
+    layout: object;
+    paint: object;
+    type:
+      | "fill"
+      | "line"
+      | "symbol"
+      | "circle"
+      | "heatmap"
+      | "fill-extrusion"
+      | "raster"
+      | "hillshade"
+      | "background";
+  }) => {
+    map.value.addSource(stateSource, { type: "geojson", data });
+
+    map.value.addLayer({
+      id: layerId,
+      type,
+      source: stateSource,
+      ...rest,
+    });
   };
 
-  const togglePolygon = () => {
-    polygonLayer.value = !polygonLayer.value;
+  const removeLayer = (layerId, stateSource) => {
+    if (map.value.getLayer(layerId)) {
+      map.value.removeLayer(layerId);
+      map.value.removeSource(stateSource);
+    }
   };
 
-  const toggleCircle = () => {
-    circleLayer.value = !circleLayer.value;
+  const setMap = (libreMap: maplibregl.Map) => {
+    map.value = libreMap;
   };
 
   // Return state and actions
   return {
-    isCustomMap,
-    lineLayer,
-    polygonLayer,
-    circleLayer,
-    toggleCustomMap,
-    toggleLine,
-    togglePolygon,
-    toggleCircle,
+    markerCoordinates,
+    customMarker,
+    map,
+    setCustomMarker,
+    setMap,
+    addLayer,
+    removeLayer,
   };
 }
 

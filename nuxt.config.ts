@@ -17,5 +17,10 @@ export default defineNuxtConfig({
   pinia: {
     storesDirs: ["./stores/**"],
   },
-  modules: ["@pinia/nuxt"],
+  modules: ["@pinia/nuxt", "@nuxt/eslint"],
+  eslint: {
+    config: {
+      stylistic: true,
+    },
+  },
 });
