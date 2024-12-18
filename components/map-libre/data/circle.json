@@ -1,0 +1,19 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Circle Marker",
+        "radius": 10
+      },
+      "geometry": {
+        "coordinates": [
+          -6.82967,
+          107.17119
+        ],
+        "type": "Point"
+      }
+    }
+  ]
+}

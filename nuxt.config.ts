@@ -14,6 +14,8 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-
-  modules: ["nuxt-maplibre"],
+  pinia: {
+    storesDirs: ["./stores/**"],
+  },
+  modules: ["@pinia/nuxt"],
 });
