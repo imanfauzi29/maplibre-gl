@@ -107,5 +107,39 @@ function addGeoJson(map) {
       "icon-size": 0.1,
     },
   });
+
+  const layers = [
+    "default-marker-layer",
+    "circle-marker-layer",
+    "custom-marker-layer",
+  ];
+
+  map.on("click", (e) => {
+    const features = map.queryRenderedFeatures(e.point, {
+      layers,
+    });
+
+    if (!features.length) {
+      return;
+    }
+
+    const feature = features[0];
+    const coordinates = feature.geometry.coordinates;
+    const properties = feature.properties;
+
+    const html = `name: ${properties.name}`;
+
+    new maplibregl.Popup().setLngLat(coordinates).setHTML(html).addTo(map);
+  });
+
+  layers.map((layer) => {
+    map.on("mouseenter", layer, () => {
+      map.getCanvas().style.cursor = "pointer";
+    });
+
+    map.on("mouseleave", layer, () => {
+      map.getCanvas().style.cursor = "";
+    });
+  });
 }
 </script>
